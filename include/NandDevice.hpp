@@ -22,15 +22,15 @@ struct Page {
 
 class NandDevice {
 public:
-  NandDevice(int totalBlocks);
+  NandDevice();
 
   // 基礎操作定義
-  void writePage(int blockID, int pageID, const std::string & data ); // 寫入
-  std::string readPAge(int blockID, int pageID) const; // 讀取（不能修改）
-  void eraseBlocks(int blockID); // 清除 block; 
+  void writePage(uint32_t blockID, uint32_t pageID, const std::string & data ); // 寫入
+  std::string readPage(uint32_t blockID, uint32_t pageID) const; // 讀取（不能修改）
+  void eraseBlocks(uint32_t blockID); // 清除 block; 
 
   // 輔助
-  PageStatus getPageStatus(int blockID, int pageID) const;
+  PageStatus getPageStatus(uint32_t blockID, uint32_t pageID) const;
   int getTotalBlocks() const {return totalBlocks_};
 
 
@@ -38,9 +38,9 @@ private:
   int totalBlocks_; // 儲存這個 NandDevice 總共有多少 blocks
 
   // 二維資料結構模擬 blocks & page
-  std::vector<std::vector<Page>> strage_; // strage_[0] -> block 0; storage_[0][2] -> block 0 中的 page [2];
+  std::vector<std::vector<Page>> storage_; // strage_[0] -> block 0; storage_[0][2] -> block 0 中的 page [2];
 
   // 位置檢查函式
-  bool isValidAddress(int blockID, int pageID) const;
+  bool isValidAddress(uint32_t blockID, uint32_t pageID) const;
 
 }
