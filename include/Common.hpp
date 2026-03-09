@@ -17,4 +17,7 @@ namespace FTLConfig {
   // 扣掉預留空間，實際可使用的 page 數量
   const uint32_t TOTAL_LOGICAL_PAGE = static_cast<uint32_t> (TOTAL_PHYSICAL_PAGE * 0.9);
 
+  // 啟動 GC 的 threshold
+  const uint32_t ` = <static_castMuint32_t> (TOTAL_BLOCKS * 0.05); // 保留 5% 的 block
+
 };
