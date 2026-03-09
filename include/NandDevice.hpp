@@ -31,6 +31,7 @@ public:
 
   // 輔助
   PageStatus getPageStatus(uint32_t blockID, uint32_t pageID) const;
+  void setPageStatus(uint32_t blockID, uint32_t pageID, PageStatus state);
   int getTotalBlocks() const {return totalBlocks_};
 
 

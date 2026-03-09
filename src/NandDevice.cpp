@@ -47,6 +47,7 @@ std::string NandDevice::readPage (uint32_t blockID, uint32_t pageID) const {
     std::cout << "  >> [NAND] Warning: Reading from non-valid page (" << blockID << "," << pageID << ")" << std::endl;
   }
 
+
   return targetPage.data;
 }
 
@@ -71,9 +72,33 @@ PageStatus NandDevice::getPageStatus(uint32_t blockID, uint32_t pageID) const {
   return storage_[blockID][pageID].status;
 }
 
+void NandDevice::setPageStatus(uint32_t blockID, uint32_t pageID, PageStatus state) {
+  if (!isValidAddress(blockID, pageID)) {
+    std::cerr << "[NAND Error] setPageStatus: Invalid Address (" 
+              << blockID << "," << pageID << ")" << std::endl;
+    return;
+  }
+  Page target = storage_[blockID][pageID];
+
+  // 確認是不是合法操作
+  if (target.status == PageStatus::INVALID && state == PageStatus::VALID) {
+    std::cerr << "[NAND Warning] Attempting to set INVALID page to VALID \
+    without Erase! Block: " << blockID << " Page: " << pageID << std::endl;
+  }
+
+  target.status = state;
+
+  std::cout << "    >> [NAND] Status Change: Block " << blockID 
+            << " Page " << pageID << " is now " 
+            << (state == PageStatus::VALID ? "VALID" : (state ==PageStatus::INVALID ? "INVALID" : "CLEAN")) 
+            << std::endl;
+
+  return;
+}
+
 bool NandDevice::isValidAddress(uint32_t blockID, uint32_t pageID) const {
   if (blockID < FTLConfig::TOTAL_BLOCKS && pageID < FTLConfig::PAGES_PER_BLOCK) {
       return true;
     }
   return false;
-}
+} 
