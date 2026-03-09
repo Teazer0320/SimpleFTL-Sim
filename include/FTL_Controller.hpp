@@ -11,6 +11,7 @@ public:
   void write(LBA lba, const std::string & data);
   std::string read(LBA lba);
   void trim(LBA lba);   // Host 刪除請求
+  // void performGC(); // 執行 GC
 
   // 其他
   void printStatistics() const;
