@@ -1,34 +1,37 @@
 #pragma once
 #include <vector>
 #include <queue>
-#include <set>
+#include "Common.hpp"
 
-enum class BlockStatus { FREE, DATA, DIRTY, BAD};
-
-struct Block {
-  int id;
-  int eraseCount = 0;
-  int invalidPageCount = 0;
-  BlockStatus status = BlockStatus::FREE;
+// 區塊元數據
+struct BlockInfo {
+  uint32_t id;
+  uint32_t eraseCount = 0;
+  uint32_t invalidPageCount = 0;
+  uint32_t freePageOffset = 0; // 該 Block 內下一個可寫入的 Page Offset
 };
-
 
 class BlockManager {
 public:
-  BlockManager(int totalBlocks);
-  int getFreeBlock();               // get 可寫入的 block ID
+  BlockManager();
+  
+  
+  PBA allocateNextFreePage();   // 取得下一個可寫入的物理位址 (PBA)
 
-  void invalidatePage(int blockId); // 當 page 無效時計數
-  int selectVictimBlock();          // 用 Greedy 挑選回價值最高的 block ID;
-  void eraseBlco(int blockID);      // 清除 block 內部資料，並歸還 free list 內
+  void invalidatePage(PBA pba); // 當 LBA 更新時，告知 BlockManager 舊的 PBA 已失效
+  
+  bool isGCNeeded() const;      // 檢查是否需要啟動垃圾回收 (GC)
+  
+  uint32_t selectVictimBlock(); // 挑選回收價值最高的 Block (Greedy Policy)
+  
+  void resetBlockMetadata(uint32_t blockID);  // 重置區塊狀態 (用於 GC 擦除後)
 
 private:
-  std::queue <Block> freeList_;     // 存放可使用的 block 
-  std::vector<Block> blocks_;       // all blocks;
-  
-  /* TODO 
-    完成 Wear leveling 的優先權隊列
-  */
+    uint32_t fetchFreeBlock(); // 從 Pool 中拿一個乾淨的 Block
 
+    std::vector<BlockInfo> blocks_;
+    std::queue<uint32_t> free_block_pool_;
+    
+    int current_block_id_;     // 當前正在寫入的 Block
+    uint32_t current_page_offset_; // 當前寫到第幾頁
 };
-
