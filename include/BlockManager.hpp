@@ -3,7 +3,7 @@
 #include <queue>
 #include "Common.hpp"
 
-// 區塊元數據
+// 區塊
 struct BlockInfo {
   uint32_t id;
   uint32_t eraseCount = 0;
