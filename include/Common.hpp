@@ -18,6 +18,6 @@ namespace FTLConfig {
   const uint32_t TOTAL_LOGICAL_PAGE = static_cast<uint32_t> (TOTAL_PHYSICAL_PAGE * 0.9);
 
   // 啟動 GC 的 threshold
-  const uint32_t ` = <static_castMuint32_t> (TOTAL_BLOCKS * 0.05); // 保留 5% 的 block
+  const uint32_t GC_THRESHOLD_BLOCKS= static_cast<uint32_t> (TOTAL_BLOCKS * 0.05); // 保留 5% 的 block
 
 };

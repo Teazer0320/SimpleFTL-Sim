@@ -32,7 +32,7 @@ public:
   // 輔助
   PageStatus getPageStatus(uint32_t blockID, uint32_t pageID) const;
   void setPageStatus(uint32_t blockID, uint32_t pageID, PageStatus state);
-  int getTotalBlocks() const {return totalBlocks_};
+  int getTotalBlocks() const {return totalBlocks_;};
 
 
 private:
@@ -44,4 +44,4 @@ private:
   // 位置檢查函式
   bool isValidAddress(uint32_t blockID, uint32_t pageID) const;
 
-}
+};
