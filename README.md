@@ -44,3 +44,25 @@ SimpleFTL-Sim/
           ↑
 [               main.cpp                    ]
 ```
+
+# Build & Execution
+- use Cmake
+```bash
+# build folder
+mkdir build && cd build
+
+# Generate build script and compile
+cmake ..
+make
+
+# execution
+./FTL_Sim
+```
+
+- Use G++ compiler
+```
+g++ -std=c++17 -I./include src/*.cpp -o FTL_Sim
+
+# 執行模擬器
+./FTL_Sim
+```
