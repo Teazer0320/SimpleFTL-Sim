@@ -1,6 +1,7 @@
 #include <iostream>
 #include "BlockManager.hpp"
 #include "Common.hpp"
+#include "Logger.hpp"
 
 BlockManager::BlockManager(): current_block_id_(-1), current_page_offset_(0) {
   blocks_.resize(FTLConfig::TOTAL_BLOCKS);
@@ -8,15 +9,15 @@ BlockManager::BlockManager(): current_block_id_(-1), current_page_offset_(0) {
     blocks_[id].id = id;
     free_block_pool_.push(id);
   }
-  std::cout << "[BlockMgr] Initialized with " << FTLConfig::TOTAL_BLOCKS << " free blocks." << std::endl;
+  std::cout << Color::GREEN << "[BlockMgr] Initialized with " << FTLConfig::TOTAL_BLOCKS << " free blocks." << Color::RESET << std::endl;
 }
 
 PBA BlockManager::allocateNextFreePage() {
-  if (current_block_id_ == -1 || current_page_offset_ > FTLConfig::PAGES_PER_BLOCK) {
+  if (current_block_id_ == -1 || current_page_offset_ >= FTLConfig::PAGES_PER_BLOCK) {
     current_block_id_ = fetchFreeBlock();
     current_page_offset_ = 0;
 
-    std::cout << "    >> [BlockMgr] Switched to Block " << current_block_id_ << std::endl;
+    std::cout << Color::GREEN << "    >> [BlockMgr] Switched to Block " << current_block_id_ << Color::RESET << std::endl;
   }
 
   PBA pba = (current_block_id_ * FTLConfig::PAGES_PER_BLOCK) + current_page_offset_; 

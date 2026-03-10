@@ -1,16 +1,17 @@
 #include "AddressMapper.hpp"
+#include "Logger.hpp"
 #include <iostream>
 
 AddressMapper::AddressMapper() {
   mapping_table.assign(FTLConfig::TOTAL_LOGICAL_PAGE, INVALID_PBA);
-  std::cout << "[Mapper] Initialized L2P Table with " 
-              << FTLConfig::TOTAL_LOGICAL_PAGE << " entries." << std::endl;
+  std::cout << Color::GREEN << "[Mapper] Initialized L2P Table with " 
+              << FTLConfig::TOTAL_LOGICAL_PAGE << " entries." << Color::RESET << std::endl;
 }
 
 void AddressMapper::updateMapping(LBA lba, PBA pba) {
   if (lba >= FTLConfig::TOTAL_LOGICAL_PAGE) {
-    std::cerr << "  [Mapper Error] LBA " << lba 
-              << " is out of logical range!" << std::endl;
+    std::cerr << Color::RED << "  [Mapper Error] LBA " << lba 
+              << " is out of logical range!" << Color::RESET << std::endl;
     return;
   }
 
@@ -20,12 +21,12 @@ void AddressMapper::updateMapping(LBA lba, PBA pba) {
   mapping_table[lba] = pba;
 
   if (old_pba == INVALID_PBA) {
-    std::cout << "  -> [Mapper] First write for LBA " << lba 
-              << ". Mapping to PBA " << pba << std::endl;
+    std::cout << Color::GREEN << "  -> [Mapper] First write for LBA " << lba 
+              << ". Mapping to PBA " << pba << Color::RESET << std::endl;
   } else {
-    std::cout << "  -> [Mapper] Update Mapping: LBA " << lba 
+    std::cout << Color::GREEN << "  -> [Mapper] Update Mapping: LBA " << lba 
               << " | Old PBA: " << old_pba << " -> New PBA  "
-              << pba << std::endl;
+              << pba << Color::RESET << std::endl;
   }
   return;
 }
